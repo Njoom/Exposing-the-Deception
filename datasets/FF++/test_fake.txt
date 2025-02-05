@@ -1,4 +1,5 @@
 1,FF++/manipulated_sequences/Face2Face/c23/953_974.mp4,64
+1,/content/drive/MyDrive/FF++Test_Exposing the Deception Paper/016_209/0000.png,
 1,FF++/manipulated_sequences/Face2Face/c23/974_953.mp4,71
 1,FF++/manipulated_sequences/Deepfakes/c23/953_974.mp4,71
 1,FF++/manipulated_sequences/Deepfakes/c23/974_953.mp4,64
