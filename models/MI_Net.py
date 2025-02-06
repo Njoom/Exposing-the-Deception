@@ -14,7 +14,7 @@ class MI_Net(nn.Module):
         self.region_models = []
         for i in range(num_regions):
             layer = None  # NjoomEdit
-            if model == 'resnet':
+            if model == 'resnet34':
                 layer = resnet34(pretrained=True)
                 logging.info(f'Model selected: ResNet')
             elif model == 'mobilenet':
