@@ -8,7 +8,6 @@ import logging
 class MI_Net(nn.Module):
     def __init__(self, model='resnet',num_regions=4,num_classes=2,freeze_fc=False,dropout=0.5)-> object:
         super(MI_Net, self).__init__()
-
         self.num_regions=num_regions
         logging.info(f'Now has {num_regions} region models')
         self.region_models = []
@@ -25,12 +24,12 @@ class MI_Net(nn.Module):
                 logging.info(f'Model selected: effecientNet')
             else:
                 logging.error("please choose the tpye of backbone in Local Information Block.")
-            if layer is not None:  # Check i
-                layer_name = 'region_model{}'.format(i + 1)
-                self.add_module(layer_name, layer)
-                self.region_models.append(layer_name)
+            if layer is not None:  # Check 
+                self.add_module(f'region_model{i + 1}', layer)
+                self.region_models.append(layer)
             else:
                 logging.error(f'Layer for model {i + 1} is None. Check model selection logic.')
+            
 
         #in_size = get_output_size(getattr(self, 'region_models'))
         in_size = get_output_size(self.region_models[0])
