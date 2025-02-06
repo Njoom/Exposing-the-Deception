@@ -85,7 +85,18 @@ class ReadDataset():
             for i in range(len(lines)):
                 # start clearing duplicates
                 raw = re.sub("\s", "", lines[i]).split(",")
-                paths = os.listdir(raw[1]) #video name
+                
+                # Print the value of raw[1] to verify the directory path
+                print(f"Attempting to list directory: {raw[1]}")
+                # Check if the path exists before listing
+                if os.path.exists(raw[1]):
+                    print(f"Directory exists: {raw[1]}")
+                    paths = os.listdir(raw[1])  # video nam
+                else:
+                    print(f"Directory does not exist: {raw[1]}")
+                    continue  # Skip this iteration if the directory doesn't exist
+               
+                #paths = os.listdir(raw[1]) #video name
                 for row in paths:
                     path_dir = os.path.join(raw[1], row)
                     if os.path.isfile(path_dir) and '.png' in path_dir:
