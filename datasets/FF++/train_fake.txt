@@ -1,8 +1,2 @@
-1,/content/drive/MyDrive/FF++Test_Exposing the Deception Paper/000_003/0000.png
-1,/content/drive/MyDrive/FF++Test_Exposing the Deception Paper/000_003/0025.png
-1,/content/drive/MyDrive/FF++Test_Exposing the Deception Paper/000_003/0050.png
-1,/content/drive/MyDrive/FF++Test_Exposing the Deception Paper/000_003/0075.png
-1,/content/drive/MyDrive/FF++Test_Exposing the Deception Paper/001_870/0000.png
-1,/content/drive/MyDrive/FF++Test_Exposing the Deception Paper/001_870/0025.png
-1,/content/drive/MyDrive/FF++Test_Exposing the Deception Paper/001_870/0050.png
-1,/content/drive/MyDrive/FF++Test_Exposing the Deception Paper/001_870/0075.png
+1,/content/drive/MyDrive/FF++Test_Exposing the Deception Paper/000_003/,8
+
