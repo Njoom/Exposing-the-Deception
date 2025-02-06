@@ -30,7 +30,7 @@ class MI_Net(nn.Module):
                 self.add_module(layer_name, layer)
                 self.region_models.append(layer_name)
             else:
-            logging.error(f'Layer for model {i + 1} is None. Check model selection logic.')
+                logging.error(f'Layer for model {i + 1} is None. Check model selection logic.')
 
         in_size = get_output_size(getattr(self, 'region_models'))
         self.local_linears = []
