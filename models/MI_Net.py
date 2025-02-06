@@ -13,6 +13,7 @@ class MI_Net(nn.Module):
         logging.info(f'Now has {num_regions} region models')
         self.region_models = []
         for i in range(num_regions):
+            layer = None  # NjoomEdit
             if model == 'resnet':
                 layer = resnet34(pretrained=True)
             elif model == 'mobilenet':
@@ -21,9 +22,10 @@ class MI_Net(nn.Module):
                 layer = EfficientNet(pretrained=True)
             else:
                 logging.error("please choose the tpye of backbone in Local Information Block.")
-            layer_name = 'region_model{}'.format(i + 1)
-            self.add_module(layer_name, layer)
-            self.region_models.append(layer_name)
+            if layer is not None:  # Check i
+                layer_name = 'region_model{}'.format(i + 1)
+                self.add_module(layer_name, layer)
+                self.region_models.append(layer_name)
 
         in_size = get_output_size(getattr(self, 'region_model1'))
         self.local_linears = []
