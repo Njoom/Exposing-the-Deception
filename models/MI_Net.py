@@ -6,7 +6,7 @@ from models.efficientnet import EfficientNet
 from models.mobilenet import MobileNetV1
 import logging
 class MI_Net(nn.Module):
-    def __init__(self, model='resnet34',num_regions=4,num_classes=2,freeze_fc=False,dropout=0.5)-> object:
+    def __init__(self, model='resnet',num_regions=4,num_classes=2,freeze_fc=False,dropout=0.5)-> object:
         super(MI_Net, self).__init__()
 
         self.num_regions=num_regions
