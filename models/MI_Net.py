@@ -25,21 +25,22 @@ class MI_Net(nn.Module):
             else:
                 logging.error("please choose the tpye of backbone in Local Information Block.")
             if layer is not None:  # Check 
-                self.add_module(f'region_model{i + 1}', layer)
-                self.region_models.append(layer_name)
+                layer_name = f'region_model{i + 1}'  # Initialize layer_name here
+                self.add_module(layer_name, layer)
+                self.region_models.append(layer_name)  # Append layer_name after it's defined
             else:
                 logging.error(f'Layer for model {i + 1} is None. Check model selection logic.')
             
 
         #in_size = get_output_size(getattr(self, 'region_models'))
-        in_size = get_output_size(self.region_models[0])
+        in_size = get_output_size(getattr(self, self.region_models[0])) 
         self.local_linears = []
         for i in range(num_regions):
             local_linear=nn.Linear(in_size * (num_regions - 1), num_classes)
             layer_name = 'local_linear{}'.format(i + 1)
             self.add_module(layer_name, local_linear)
             self.local_linears.append(layer_name)
-        #
+      
 
         self.bottleneck = ChannelCompress(in_ch=in_size*num_regions, out_ch=in_size)
         # self.global_model=ResNet_18()
