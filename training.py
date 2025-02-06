@@ -51,8 +51,17 @@ class train_and_test_model():
                                             lil_loss=self.args.lil_loss,
                                             gil_loss=self.args.gil_loss,
                                             device=self.device)
-        if len(self.device_ids) > 1:  # 单机多卡
-            self.net = nn.DataParallel(self.net, device_ids=self.device_ids)
+        # Assuming `self.net` is your model
+    if torch.cuda.is_available():
+        device = torch.device("cuda")  # Use the GPU if available
+        self.net = self.net.to(device)  # Move the model to GPU
+    else:
+        device = torch.device("cpu")  # Fallback to CPU
+        self.net = self.net.to(device)  # Move the model to CPU
+
+       
+        #if len(self.device_ids) > 1:  # 单机多卡
+            #self.net = nn.DataParallel(self.net, device_ids=self.device_ids)
 
         self.net = self.net.cuda(self.device)
         if self.args.resume_model:
