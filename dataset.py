@@ -83,11 +83,25 @@ class ReadDataset():
             elif '/train_' in file:
                 key = 'train'
             for i in range(len(lines)):
-                # start clearing duplicates
-                raw = re.sub("\s", "", lines[i]).split(",")
+
+                line = lines[i]
+                print(f"Raw line: {line.strip()}")  # Print the current line being processed
                 
+                raw = re.sub("\s", "", lines[i]).split(",")
+
+
+                
+                if len(raw) > 1:
+                    print(f"Attempting to list directory: {raw[1]}")
+                    if os.path.exists(raw[1]):
+                        print(f"Directory exists: {raw[1]}")
+                        paths = os.listdir(raw[1])  # video name
+                    else:
+                        print(f"Directory does not exist: {raw[1]}")
+                else:
+                    print("Raw data does not have enough elements:", raw)  
                 # Print the value of raw[1] to verify the directory path
-                print(f"Attempting to list directory: {raw[1]}")
+                print(f"Raw data after split: {raw}")
                 # Check if the path exists before listing
                 if os.path.exists(raw[1]):
                     print(f"Directory exists: {raw[1]}")
@@ -95,7 +109,11 @@ class ReadDataset():
                 else:
                     print(f"Directory does not exist: {raw[1]}")
                     continue  # Skip this iteration if the directory doesn't exist
-               
+
+
+
+
+                
                 #paths = os.listdir(raw[1]) #video name
                 for row in paths:
                     path_dir = os.path.join(raw[1], row)
