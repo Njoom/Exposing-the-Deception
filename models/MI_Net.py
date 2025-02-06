@@ -32,7 +32,8 @@ class MI_Net(nn.Module):
             else:
                 logging.error(f'Layer for model {i + 1} is None. Check model selection logic.')
 
-        in_size = get_output_size(getattr(self, 'region_models'))
+        #in_size = get_output_size(getattr(self, 'region_models'))
+        in_size = get_output_size(self.region_models[0])
         self.local_linears = []
         for i in range(num_regions):
             local_linear=nn.Linear(in_size * (num_regions - 1), num_classes)
