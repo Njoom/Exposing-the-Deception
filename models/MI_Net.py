@@ -26,7 +26,7 @@ class MI_Net(nn.Module):
                 logging.error("please choose the tpye of backbone in Local Information Block.")
             if layer is not None:  # Check 
                 self.add_module(f'region_model{i + 1}', layer)
-                self.region_models.append(layer)
+                self.region_models.append(layer_name)
             else:
                 logging.error(f'Layer for model {i + 1} is None. Check model selection logic.')
             
