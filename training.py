@@ -31,8 +31,20 @@ class train_and_test_model():
         self.train_dataset = MyDataset(self.dataset.data['train'],self.dataset.labels['train'],size=args.size )
         self.val_dataset = MyDataset(self.dataset.data['val'], self.dataset.labels['val'],size=args.size , test=True)
         self.test_dataset = MyDataset(self.dataset.data['test'], self.dataset.labels['test'],size=args.size , test=True)
+        #self.device = torch.device("cuda", self.device_ids[0])
 
-        self.device = torch.device("cuda", self.device_ids[0])
+
+        # Set device for training
+        if torch.cuda.is_available():
+            self.device = torch.device("cuda", self.device_ids[0])  # Use the first GPU if available
+        else:
+            self.device = torch.device("cpu")  # Fallback to CPU
+
+        self.net = self.net.to(self.device)  # Move the model to the selected device
+
+
+
+        
         try:
             self.train_loader = DataLoader(self.train_dataset, shuffle=True, batch_size=args.bs,
                                            num_workers=args.num_workers)
@@ -51,19 +63,11 @@ class train_and_test_model():
                                             lil_loss=self.args.lil_loss,
                                             gil_loss=self.args.gil_loss,
                                             device=self.device)
-        # Assuming `self.net` is your model
-    if torch.cuda.is_available():
-        device = torch.device("cuda")  # Use the GPU if available
-        self.net = self.net.to(device)  # Move the model to GPU
-    else:
-        device = torch.device("cpu")  # Fallback to CPU
-        self.net = self.net.to(device)  # Move the model to CPU
 
-       
         #if len(self.device_ids) > 1:  # 单机多卡
             #self.net = nn.DataParallel(self.net, device_ids=self.device_ids)
 
-        self.net = self.net.cuda(self.device)
+        #self.net = self.net.cuda(self.device)
         if self.args.resume_model:
             self.load_model(self.args.resume_model)
         self.update_lr()
