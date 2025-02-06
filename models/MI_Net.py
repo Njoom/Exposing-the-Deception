@@ -27,7 +27,7 @@ class MI_Net(nn.Module):
                 self.add_module(layer_name, layer)
                 self.region_models.append(layer_name)
 
-        in_size = get_output_size(getattr(self, 'region_model1'))
+        in_size = get_output_size(getattr(self, 'region_models'))
         self.local_linears = []
         for i in range(num_regions):
             local_linear=nn.Linear(in_size * (num_regions - 1), num_classes)
