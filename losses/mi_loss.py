@@ -27,9 +27,9 @@ class loss_functions():
                      
         #print(f"Mutual Information Calculator is :{mi_calculator}")
         #if mi_calculator == "kl":
-        self.mi_calculator = torch.nn.KLDivLoss()
+        #self.mi_calculator = torch.nn.KLDivLoss()
         #elif mi_calculator == "w":
-        #self.mi_calculator = distance.SinkhornDistance(device=device).to(device)
+        self.mi_calculator = distance.SinkhornDistance(device=device).to(device)
                      
         self.temperature =temperature
                      
