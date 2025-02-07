@@ -58,11 +58,13 @@ class train_and_test_model():
         self.test_loader = DataLoader(self.test_dataset, shuffle=False, batch_size=args.test_bs,
                                       num_workers=args.num_workers)
         self.loss_function = loss_functions(method='mi',
-                                            mi_calculator=self.args.mi_calculator, temperature=self.args.temperature,
+                                            temperature=self.args.temperature,
                                             bml_method=self.args.balance_loss_method, scales=self.args.scales,
                                             lil_loss=self.args.lil_loss,
                                             gil_loss=self.args.gil_loss,
                                             device=self.device)
+
+        #mi_calculator=self.args.mi_calculator,
 
         #if len(self.device_ids) > 1:  # 单机多卡
             #self.net = nn.DataParallel(self.net, device_ids=self.device_ids)
