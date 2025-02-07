@@ -24,12 +24,15 @@ class loss_functions():
         self.method=method
         self.bml_method =bml_method
         self.scales=scales
-        print(f"Mutual Information Calculator is :{mi_calculator}")
-        if mi_calculator == "kl":
-            self.mi_calculator = torch.nn.KLDivLoss()
-        elif mi_calculator == "w":
-            self.mi_calculator = distance.SinkhornDistance(device=device).to(device)
+                     
+        #print(f"Mutual Information Calculator is :{mi_calculator}")
+        #if mi_calculator == "kl":
+        self.mi_calculator = torch.nn.KLDivLoss()
+        #elif mi_calculator == "w":
+        #self.mi_calculator = distance.SinkhornDistance(device=device).to(device)
+                     
         self.temperature =temperature
+                     
     def criterion(self,out_dict,y):
 
         return_losses=[]
