@@ -126,7 +126,22 @@ class train_and_test_model():
                 else:
                     out = self.net(data)
                     losses = self.loss_function.criterion(out, y)
+
+                    
+                    # Add a timeout for the criterion calculation
+                    start_time = time.time()
+                    try:
+                        losses = self.loss_function.criterion(out, y)
+                        elapsed_time = time.time() - start_time
+                        if elapsed_time > 10:  # Set a threshold (e.g., 10 seconds)
+                            logging.warning("Criterion calculation is taking too long.")
+                        except Exception as e:
+                            logging.error("Error during criterion calculation: " + str(e))
+                            continue  # Skip this iteration if there's an error
+
+    
                 loss = self.loss_function.balance_mult_loss(losses)
+
 
                 if torch.isnan(loss).any():
                     logging.info("loss is NAN, so stop training...")
