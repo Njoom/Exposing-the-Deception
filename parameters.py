@@ -15,7 +15,7 @@ def parse_args():
     parser.add_argument("--lr", default=1e-3, type=float, help="learning rate of training")
     parser.add_argument("--bs", default=256, type=int, help="batch size of training")
     parser.add_argument("--test_bs", default=1000, type=int, help="batch size of training")
-    parser.add_argument("--num_workers", default=0, type=int, help="num workers") # it was 12 but changed to 0 becuase TPU in colab
+    parser.add_argument("--num_workers", default=12, type=int, help="num workers") 
 
     # arguments for loss
     parser.add_argument("--lil_loss", default=True, type=bool, help="if local information loss")
