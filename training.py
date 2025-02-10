@@ -40,8 +40,9 @@ class train_and_test_model():
         if torch.cuda.is_available():
             self.device = torch.device("cuda", self.device_ids[0])  # Use the first GPU if available
         else:
-            self.device = torch.device("cpu")  # Fallback to CPU
-
+            self.device = torch.device("xla")  # Fallback to CPU
+        
+        data = data.to(self.device)
         self.net = self.net.to(self.device)  # Move the model to the selected device
 
         
