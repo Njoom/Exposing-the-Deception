@@ -35,9 +35,8 @@ class loss_functions():
         self.temperature =temperature
                      
     def criterion(self,out_dict,y):
-
+        logging.info("Entering criterion method...")
         return_losses=[]
-
         p_y_given_z=out_dict['p_y_given_z']
         p_y_given_f1_f2_f3_f4=out_dict['p_y_given_f_all']
         p_y_given_f1_fn_list=out_dict['p_y_given_f1_fn_list']
@@ -45,6 +44,7 @@ class loss_functions():
         # CE loss
         loss_fn = nn.CrossEntropyLoss()
         ce_loss = loss_fn(out_dict['p_y_given_z'], y)
+        logging.info(f"Cross-Entropy Loss calculated: {ce_loss.item()}")
 
         # Debugging: Print shapes of inputs
         print(f"p_y_given_z shape: {p_y_given_z.shape}")
@@ -58,9 +58,11 @@ class loss_functions():
             try:
                 global_mi_loss = self.mi_calculator(self.softmax(p_y_given_f1_f2_f3_f4.detach() / self.temperature).log(),
                                                 self.softmax(p_y_given_z / self.temperature))
-                print("Global MI Loss calculated successfully.")
+                elapsed_time = time.time() - start_time
+                logging.info(f"Global MI Loss calculated in {elapsed_time:.2f} seconds.")
             except Exception as e:
                 print("Error calculating global MI Loss:", str(e))
+                global_mi_loss = 0 
             
 
         # # for visulization
@@ -79,11 +81,18 @@ class loss_functions():
                 for i in range(len(p_y_given_f1_fn_list)):
                     for j in range(i+1,len(p_y_given_f1_fn_list)):
                         print(f"Calculating local MI between index {i} and {j}...")
-                        local_loss = local_loss+self.mi_calculator(self.softmax(p_y_given_f1_fn_list[i] / self.temperature).log(),
+                        start_time = time.time()
+                        try:
+                            local_loss = local_loss+self.mi_calculator(self.softmax(p_y_given_f1_fn_list[i] / self.temperature).log(),
                                                     self.softmax(p_y_given_f1_fn_list[j] / self.temperature))
+                            elapsed_time = time.time() - start_time
+                            logging.info(f"Local MI calculated in {elapsed_time:.2f} seconds.")
+                        except Exception as e:
+                            logging.error(f"Error calculating local MI between {i} and {j}: " + str(e))
+                            local_loss += 0  # Fallback to 0 loss if there's an error
                         
 
-                local_loss=1-local_loss
+                #local_loss=1-local_loss
             elif self.method == 'mi':
                 # local MI loss
                 p_y_given_f1_f2_f3_f4_soft = self.softmax(p_y_given_f1_f2_f3_f4.detach() / self.temperature)
@@ -100,6 +109,7 @@ class loss_functions():
             return_losses.append(global_mi_loss)
         if self.lil_loss:
             return_losses.append(local_loss)
+        logging.info(f"Returning losses: {return_losses}")
         return return_losses
     def balance_mult_loss(self,losses):
         if self.bml_method == 'auto':
