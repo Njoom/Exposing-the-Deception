@@ -21,7 +21,7 @@ def parse_args():
     parser.add_argument("--lil_loss", default=True, type=bool, help="if local information loss")
     parser.add_argument("--gil_loss", default=True, type=bool, help="if global information loss")
     parser.add_argument('--temperature', type=float, default=1.5, help="the temperature used in knowledge distillation")
-    #parser.add_argument('--mi_calculator', default="kl", type=str, help="mutual information calculation method")
+    parser.add_argument('--mi_calculator', default="kl", type=str, help="mutual information calculation method")
     parser.add_argument('--scales', default=[1,2,10], type=list, help="multiple losses weights")
     parser.add_argument('--balance_loss_method', default='auto', type=str, help="balance multiple losses method")
 
