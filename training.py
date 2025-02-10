@@ -40,9 +40,9 @@ class train_and_test_model():
         if torch.cuda.is_available():
             self.device = torch.device("cuda", self.device_ids[0])  # Use the first GPU if available
         else:
-            self.device = torch.device("xla")  # Fallback to CPU
+            self.device = torch.device("cpu")  # Fallback to CPU
         
-        self.net = self.net.to(self.device)  # Move the model to the selected device
+        self.net = self.net.cuda() # Move the model to the selected device
 
         
         try:
@@ -126,8 +126,8 @@ class train_and_test_model():
             accumulation_steps = 4  # Adjust as needed
             for i,(data,y) in enumerate(self.train_loader):
                 logging.info(f"Loading batch {i + 1}...")
-                data = data.to(self.device) 
-                y=y.to(self.device)
+                data = data.cuda()
+                y=y.cuda()
 
                 if self.args.mixup:
                     logging.info("Applying mixup...")
