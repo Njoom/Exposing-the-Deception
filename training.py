@@ -42,7 +42,6 @@ class train_and_test_model():
         else:
             self.device = torch.device("xla")  # Fallback to CPU
         
-        data = data.to(self.device)
         self.net = self.net.to(self.device)  # Move the model to the selected device
 
         
@@ -127,8 +126,8 @@ class train_and_test_model():
             accumulation_steps = 4  # Adjust as needed
             for i,(data,y) in enumerate(self.train_loader):
                 logging.info(f"Loading batch {i + 1}...")
-                data = data.cuda(self.device)
-                y=y.cuda(self.device)
+                data = data.to(self.device) 
+                y=y.to(self.device)
 
                 if self.args.mixup:
                     logging.info("Applying mixup...")
