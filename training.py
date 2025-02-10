@@ -42,14 +42,19 @@ class train_and_test_model():
 
         self.net = self.net.to(self.device)  # Move the model to the selected device
 
-
-
         
         try:
             self.train_loader = DataLoader(self.train_dataset, shuffle=True, batch_size=args.bs,
                                            num_workers=args.num_workers)
+            # Test Data Loader
+            for i, (data, y) in enumerate(self.train_loader):
+                print(f"Batch {i + 1} loaded with data shape: {data.shape} and labels shape: {y.shape}")
+                break  # Just load one batch for testing
+            
         except:
             print("train_dataset is null")
+
+        
         try:
             self.val_loader = DataLoader(self.val_dataset, shuffle=False, batch_size=args.test_bs,
                                       num_workers=args.num_workers)
