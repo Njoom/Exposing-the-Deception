@@ -1,6 +1,8 @@
 import shutil
 
 import torch
+torch.cuda.empty_cache()
+
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
@@ -44,7 +46,7 @@ class train_and_test_model():
 
         
         try:
-            self.train_loader = DataLoader(self.train_dataset, shuffle=True, batch_size=args.bs,
+            self.train_loader = DataLoader(self.train_dataset, shuffle=True, batch_size=args.bs// 2,
                                            num_workers=args.num_workers)
             # Test Data Loader
             for i, (data, y) in enumerate(self.train_loader):
@@ -121,6 +123,7 @@ class train_and_test_model():
             avg_local_loss=[]
             self.plt_tb.reset_metrics()
             # loader_pbar = tqdm(loader, position=1)
+            accumulation_steps = 4  # Adjust as needed
             for i,(data,y) in enumerate(self.train_loader):
                 logging.info(f"Loading batch {i + 1}...")
                 data = data.cuda(self.device)
@@ -135,6 +138,11 @@ class train_and_test_model():
                     logging.info("Performing forward pass...")
                     out = self.net(data)
                     losses = self.loss_function.criterion(out, y)
+                    loss = loss / accumulation_steps  # Normalize loss
+                    loss.backward()
+                    if (i + 1) % accumulation_steps == 0:
+                        self.optimizer.step()
+                        self.optimizer.zero_grad()
 
                     
                     # Add a timeout for the criterion calculation
