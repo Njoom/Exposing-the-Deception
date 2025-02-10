@@ -26,7 +26,7 @@ class loss_functions():
         self.bml_method =bml_method
         self.scales=scales
                      
-        #print(f"Mutual Information Calculator is :{mi_calculator}")
+        print(f"Mutual Information Calculator is :{mi_calculator}")
         #if mi_calculator == "kl":
         self.mi_calculator = torch.nn.KLDivLoss()
         #elif mi_calculator == "w":
