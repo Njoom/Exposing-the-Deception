@@ -107,6 +107,7 @@ class train_and_test_model():
         logging.info(f"Starting Training...")
         # self.test(self.net, self.start_epoch-1)
         for epoch in range(self.start_epoch,self.args.epoch+self.start_epoch):
+            logging.info(f"Epoch {epoch + 1}/{self.args.epoch + self.start_epoch} started.")
             self.update_lr()
             self.net.train()
             avg_loss = []
@@ -116,14 +117,17 @@ class train_and_test_model():
             self.plt_tb.reset_metrics()
             # loader_pbar = tqdm(loader, position=1)
             for i,(data,y) in enumerate(self.train_loader):
+                logging.info(f"Loading batch {i + 1}...")
                 data = data.cuda(self.device)
                 y=y.cuda(self.device)
 
                 if self.args.mixup:
+                    logging.info("Applying mixup...")
                     data, y_a, y_b, lam = mixup_data(data, y, self.args.alpha)
                     out = self.net(data)
                     losses = mixup_criterion(self.loss_function.criterion, out, y_a, y_b, lam)
                 else:
+                    logging.info("Performing forward pass...")
                     out = self.net(data)
                     losses = self.loss_function.criterion(out, y)
 
@@ -131,8 +135,10 @@ class train_and_test_model():
                     # Add a timeout for the criterion calculation
                     start_time = time.time()
                     try:
+                        logging.info("Calculating losses using criterion...")
                         losses = self.loss_function.criterion(out, y)
                         elapsed_time = time.time() - start_time
+                        logging.info(f"Criterion calculation took {elapsed_time:.2f} seconds.")
                         if elapsed_time > 10:  # Set a threshold (e.g., 10 seconds)
                             logging.warning("Criterion calculation is taking too long.")
                     except Exception as e:
@@ -147,6 +153,7 @@ class train_and_test_model():
                     logging.info("loss is NAN, so stop training...")
                     sys.exit()
                 # backward
+                logging.info("Performing backward pass...")
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
