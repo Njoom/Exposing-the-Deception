@@ -5,6 +5,7 @@ from losses import distance
 import torch.nn as nn
 from losses.AutomaticWeightedLoss import AutomaticWeightedLoss
 import numpy as np
+
 class loss_functions():
     def __init__(self, method='distance', mi_calculator='kl', temperature=1.5, bml_method='auto', scales=[1, 1, 1],
                  gil_loss=False,lil_loss=False,device='cuda:0'):
@@ -27,9 +28,9 @@ class loss_functions():
                      
         #print(f"Mutual Information Calculator is :{mi_calculator}")
         #if mi_calculator == "kl":
-        #self.mi_calculator = torch.nn.KLDivLoss()
+        self.mi_calculator = torch.nn.KLDivLoss()
         #elif mi_calculator == "w":
-        self.mi_calculator = distance.SinkhornDistance(device=device).to(device)
+        #self.mi_calculator = distance.SinkhornDistance(device=device).to(device)
                      
         self.temperature =temperature
                      
