@@ -135,7 +135,7 @@ class train_and_test_model():
                         elapsed_time = time.time() - start_time
                         if elapsed_time > 10:  # Set a threshold (e.g., 10 seconds)
                             logging.warning("Criterion calculation is taking too long.")
-                        except Exception as e:
+                    except Exception as e:
                             logging.error("Error during criterion calculation: " + str(e))
                             continue  # Skip this iteration if there's an error
 
