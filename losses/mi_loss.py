@@ -46,12 +46,22 @@ class loss_functions():
         loss_fn = nn.CrossEntropyLoss()
         ce_loss = loss_fn(out_dict['p_y_given_z'], y)
 
+        # Debugging: Print shapes of inputs
+        print(f"p_y_given_z shape: {p_y_given_z.shape}")
+        print(f"p_y_given_f1_f2_f3_f4 shape: {p_y_given_f1_f2_f3_f4.shape}")
+
 
         #Global Information Loss
         if self.gil_loss:
             ce_loss+=loss_fn(p_y_given_f1_f2_f3_f4, y)
-            global_mi_loss = self.mi_calculator(self.softmax(p_y_given_f1_f2_f3_f4.detach() / self.temperature).log(),
+            print("Calculating global mutual information loss...")
+            try:
+                global_mi_loss = self.mi_calculator(self.softmax(p_y_given_f1_f2_f3_f4.detach() / self.temperature).log(),
                                                 self.softmax(p_y_given_z / self.temperature))
+                print("Global MI Loss calculated successfully.")
+            except Exception as e:
+                print("Error calculating global MI Loss:", str(e))
+            
 
         # # for visulization
         # try:
@@ -68,8 +78,10 @@ class loss_functions():
             if self.method == 'distance':
                 for i in range(len(p_y_given_f1_fn_list)):
                     for j in range(i+1,len(p_y_given_f1_fn_list)):
+                        print(f"Calculating local MI between index {i} and {j}...")
                         local_loss = local_loss+self.mi_calculator(self.softmax(p_y_given_f1_fn_list[i] / self.temperature).log(),
                                                     self.softmax(p_y_given_f1_fn_list[j] / self.temperature))
+                        
 
                 local_loss=1-local_loss
             elif self.method == 'mi':
@@ -83,6 +95,7 @@ class loss_functions():
                 # ce_loss = ce_loss + 0.25 * loss_fn(p_y_given_f1_fn_list[i], y)
                 local_loss = torch.exp(-local_loss)
         return_losses.append(ce_loss)
+
         if self.gil_loss:
             return_losses.append(global_mi_loss)
         if self.lil_loss:
